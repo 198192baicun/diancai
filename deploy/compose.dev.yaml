@@ -18,6 +18,8 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PORT: "3000"
+      ALLOWED_HOSTS: "${DIANCAI_BIND_IP:-127.0.0.1}:${DIANCAI_PORT:-3000}"
+      ALLOWED_ORIGINS: "${ALLOWED_ORIGINS:-}"
       FAMILY_DATA_ROOT: /data/current
       FAMILY_TIMEZONE: Asia/Shanghai
       TZ: Asia/Shanghai

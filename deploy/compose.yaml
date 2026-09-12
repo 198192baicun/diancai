@@ -18,7 +18,8 @@ services:
       DATA_ROOT: /data
       FAMILY_TIMEZONE: Asia/Shanghai
       TZ: Asia/Shanghai
-      EXPECTED_HOST: "${HOST_LAN_IP:?请设置宿主机具体局域网IPv4地址}:${HOST_PORT:-8080}"
+      ALLOWED_HOSTS: "${HOST_LAN_IP:?请设置宿主机具体局域网IPv4地址}:${HOST_PORT:-8080}"
+      ALLOWED_ORIGINS: "${ALLOWED_ORIGINS:-}"
     ports:
       - target: 3000
         published: "${HOST_PORT:-8080}"

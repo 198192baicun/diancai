@@ -1,6 +1,6 @@
 {
   "scope": "Synthetic Docker development integration; not target-host or WeChat acceptance.",
-  "project": "diancai-smoke-03d7f44bdcb0",
+  "project": "diancai-smoke-c00177632bd5",
   "checks": [
     "published port uses loopback",
     "unique test project owns container",
@@ -25,7 +25,7 @@
     "uid": 10001,
     "timezone": "Asia/Shanghai"
   },
-  "imageId": "sha256:3149adcbcb42a417e89e547c747dcf9e6bc07912a7dcc28ecacac729428831be",
+  "imageId": "sha256:61c63f52e072797a912fe1e9a134f374be22d759b493afb7e9a46a2dc764f0a1",
   "status": "passed",
   "temporaryProjectRemoved": true
 }

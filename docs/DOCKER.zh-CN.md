@@ -73,6 +73,8 @@ docker compose --env-file deploy/dev.env -f deploy/compose.dev.yaml ps
 
 微信开发配置关闭域名检查仅服务于联调。iOS/Android 真机网络、局域网权限、上传下载、弱网、关闭调试和正式发布行为须按 [开发与验收](05_开发与验收.md) 单独验证。`deploy/dev.env` 不提交到仓库。
 
+Compose 自动将 `DIANCAI_BIND_IP:DIANCAI_PORT` 设为允许的 Host；连接时使用配置中的 IP 和端口，修改端口后重新创建测试容器。`HOST_NOT_ALLOWED` 表示访问地址不匹配。容器本机健康探针仍可使用 `127.0.0.1:3000`，该例外不开放业务接口。原生微信无 Origin 请求可用；浏览器如返回 `ORIGIN_NOT_ALLOWED`，仅在确需联调时在 `deploy/dev.env` 配置 `ALLOWED_ORIGINS` 为完整来源（如 `http://localhost:8080`），多个来源用逗号分隔，空值不允许浏览器来源。不要使用通配符。
+
 ## 6. 日常查看与停止测试服务
 
 默认配置的命令：

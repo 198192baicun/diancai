@@ -61,6 +61,8 @@ The phone and Linux host must be on the same permitted household network. A phon
 
 Validate WeChat network rules, LAN permissions, iOS/Android behavior, uploads/downloads, weak networks and debug-disabled release behavior separately. Access from DevTools alone is not release acceptance.
 
+Direct Node startup accepts only loopback Hosts with the actual listening port by default. For phone integration, set `ALLOWED_HOSTS` to the actual LAN `IP:port` before starting; separate multiple entries with commas. For example on Linux: `ALLOWED_HOSTS=192.168.1.100:3000 npm run server:dev` (replace the example IP). Docker derives this from its binding IP and published port. Browser requests carrying Origin are rejected unless explicitly listed in `ALLOWED_ORIGINS`; native requests without Origin need no such setting. See the Docker tutorial.
+
 ## Features and business guarantees
 
 The client and server support household initialization, member selection, daily menus, a shared dish library, repeated orders with independent notes, batch submission, claiming/unclaiming/completing/cancelling items, overdue work, history and reordering, reviews, family voting, categories/settings and original media upload/download.

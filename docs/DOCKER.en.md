@@ -73,6 +73,8 @@ Keep the phone and server on the same permitted household network. Enter `http:/
 
 Disabling domain checks in WeChat development settings only supports development. Validate iOS/Android LAN permissions, requests, uploads/downloads, weak networks, disabled debug mode and the actual release mode separately. See the [acceptance specification, in Chinese](05_开发与验收.md). Do not commit `deploy/dev.env`.
 
+Compose sets the allowed Host to `DIANCAI_BIND_IP:DIANCAI_PORT`. Connect using that exact IP and port; recreate the test container after changing the port. `HOST_NOT_ALLOWED` indicates an address mismatch. Local container health probes can still use `127.0.0.1:3000`; this exception does not allow business endpoints. Native requests without Origin remain supported. For browser integration returning `ORIGIN_NOT_ALLOWED`, explicitly set `ALLOWED_ORIGINS` in `deploy/dev.env` to complete origins such as `http://localhost:8080`, separated by commas. An empty value permits no browser origins. Wildcards are not supported.
+
 ## 6. Inspect and stop the test service
 
 With the default configuration:

@@ -4,6 +4,10 @@
 
 ## 1. 通用结构
 
+所有接口执行精确 Host 白名单检查，拒绝返回403 `HOST_NOT_ALLOWED`。直接开发启动未配置 `ALLOWED_HOSTS` 时，仅接受 `127.0.0.1`、`localhost`、`[::1]` 加实际监听端口；配置值为逗号分隔的 `host:port`，不支持通配符。仅从本机回环连接、使用本机 Host 与监听端口访问的 GET `/health/live`、GET `/health/ready` 可作为探针例外，不扩大业务白名单。请求携带 Origin（包括空串或 `null`）时必须精确匹配 `ALLOWED_ORIGINS`，否则403 `ORIGIN_NOT_ALLOWED`；默认空白名单拒绝所有 Origin，无 Origin 的原生请求仍可用。预检 OPTIONS 也执行上述检查。
+
+媒体读取发生异步错误时关闭该次传输；响应开始后不追加 JSON 错误或返回完整下载成功。客户端取消下载时关闭对应文件流，服务继续处理其他请求，原文件和引用不变。
+
 前缀 `/api`；JSON UTF-8；字段采用 camelCase；ID 为不透明字符串。成功响应 `{"data":...,"meta":{"requestId":"...","instanceId":"...","dataEpoch":"...","today":"YYYY-MM-DD"}}`，时间戳 UTC ISO 8601；`meta.today` 统一按 `Asia/Shanghai` 计算，业务日界线为北京时间 00:00。空资源使用 `null`，不以 `{}` 代替。成功状态为 200 或创建时 201；幂等成功重放可返回 200，data 内容与首次一致。
 
 失败响应：

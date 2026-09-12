@@ -10,6 +10,7 @@ from __future__ import annotations
 import base64
 import json
 import os
+import socket
 from pathlib import Path
 import subprocess
 import tempfile
@@ -21,8 +22,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     project = 'diancai-smoke-' + uuid.uuid4().hex[:12]
-    env = {**os.environ, 'DIANCAI_BIND_IP': '127.0.0.1', 'DIANCAI_PORT': '0',
-           'DIANCAI_DEV_IMAGE': 'diancai-dev:local'}
+    # Select the mapped port before Compose expands the exact Host allowlist.
+    with socket.socket() as probe:
+        probe.bind(('127.0.0.1', 0))
+        port = str(probe.getsockname()[1])
+    env = {**os.environ, 'DIANCAI_BIND_IP': '127.0.0.1', 'DIANCAI_PORT': port,
+           'ALLOWED_ORIGINS': '',
+           'DIANCAI_DEV_IMAGE': os.environ.get('DIANCAI_DEV_IMAGE', 'diancai-dev:local')}
     records = []
     report = {'scope': 'Synthetic Docker development integration; not target-host or WeChat acceptance.',
               'project': project, 'checks': records}

@@ -4,6 +4,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const { URL } = require('node:url');
 const crypto = require('node:crypto');
+const { pipeline } = require('node:stream/promises');
 const {
   MAX_JSON_BYTES,
   AppError,
@@ -95,11 +96,18 @@ function json(res, status, payload, extraHeaders = {}) {
 
 function allowedEnvironment(req, options) {
   const host = String(req.headers.host || '').toLowerCase();
-  const allowedHosts = options.allowedHosts || (process.env.ALLOWED_HOSTS || '').split(',').map((x) => x.trim().toLowerCase()).filter(Boolean);
-  if (allowedHosts.length && !allowedHosts.includes(host)) throw appError(403, 'HOST_NOT_ALLOWED', '请求 Host 不在家庭服务允许列表');
+  const port = req.socket.localPort;
+  const loopbackHosts = [`127.0.0.1:${port}`, `localhost:${port}`, `[::1]:${port}`];
+  const configuredHosts = (process.env.ALLOWED_HOSTS || '').split(',').map((x) => x.trim().toLowerCase()).filter(Boolean);
+  const allowedHosts = options.allowedHosts ?? (configuredHosts.length ? configuredHosts : loopbackHosts);
+  const remote = req.socket.remoteAddress;
+  // 容器探针只豁免本机健康 GET，不扩大业务接口的 Host 白名单。
+  const localHealth = req.method === 'GET' && ['/health/live', '/health/ready'].includes(req.url)
+    && ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote) && loopbackHosts.includes(host);
+  if (!localHealth && !allowedHosts.includes(host)) throw appError(403, 'HOST_NOT_ALLOWED', '请求 Host 不在家庭服务允许列表');
   const origin = req.headers.origin;
   const allowedOrigins = options.allowedOrigins || (process.env.ALLOWED_ORIGINS || '').split(',').map((x) => x.trim()).filter(Boolean);
-  if (origin && allowedOrigins.length && !allowedOrigins.includes(origin)) throw appError(403, 'ORIGIN_NOT_ALLOWED', '请求来源不在允许列表');
+  if (origin !== undefined && !allowedOrigins.includes(origin)) throw appError(403, 'ORIGIN_NOT_ALLOWED', '请求来源不在允许列表');
   return origin && allowedOrigins.includes(origin) ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' } : {};
 }
 
@@ -272,7 +280,8 @@ function createApp(options = {}) {
         case 'mediaDownload': {
           const result = media.streamMedia(db, found.params.id, dataRoot, found.name === 'mediaDownload');
           res.writeHead(200, { ...corsHeaders, ...result.headers });
-          fs.createReadStream(result.filePath).pipe(res);
+          // pipeline 同时处理文件错误与客户端断开，并销毁未完成的流。
+          await pipeline(fs.createReadStream(result.filePath), res);
           return;
         }
         default: throw appError(500, 'INTERNAL_ERROR', '路由尚未实现');

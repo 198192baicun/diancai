@@ -10,6 +10,101 @@ const { DatabaseSync } = require('node:sqlite');
 const { createApp } = require('../server/src/http.cjs');
 const { createDatabase } = require('../server/src/db.cjs');
 
+function requestWithHost(base, pathname, headers = {}, method = 'GET') {
+  return new Promise((resolve, reject) => {
+    const req = require('node:http').request(new URL(pathname, base), { method, headers }, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: Buffer.concat(chunks).toString() }));
+      res.on('error', reject);
+    });
+    req.on('error', reject);
+    req.end();
+  });
+}
+
+test('默认拒绝任意 Host 和 Origin，原生无 Origin 请求仍可连接', async (t) => {
+  const previous = { hosts: process.env.ALLOWED_HOSTS, origins: process.env.ALLOWED_ORIGINS };
+  delete process.env.ALLOWED_HOSTS;
+  delete process.env.ALLOWED_ORIGINS;
+  t.after(() => {
+    for (const [key, value] of [['ALLOWED_HOSTS', previous.hosts], ['ALLOWED_ORIGINS', previous.origins]]) {
+      if (value === undefined) delete process.env[key]; else process.env[key] = value;
+    }
+  });
+  const { base } = await startFixture(t);
+  assert.equal((await requestWithHost(base, '/api/system')).status, 200);
+  for (const host of ['audit.invalid', '127.0.0.1.attacker.invalid', 'localhost:1']) {
+    const res = await requestWithHost(base, '/api/system', { Host: host });
+    assert.equal(res.status, 403);
+    assert.equal(JSON.parse(res.body).error.code, 'HOST_NOT_ALLOWED');
+  }
+  for (const origin of ['http://audit.invalid', 'null', '']) {
+    const res = await requestWithHost(base, '/api/system', { Origin: origin });
+    assert.equal(res.status, 403);
+    assert.equal(JSON.parse(res.body).error.code, 'ORIGIN_NOT_ALLOWED');
+  }
+  assert.equal((await requestWithHost(base, '/api/system', { Origin: 'http://audit.invalid' }, 'OPTIONS')).status, 403);
+});
+
+test('明确配置映射端口和浏览器来源，本机探针不放宽业务 Host', async (t) => {
+  const origin = 'http://viewer.invalid:8080';
+  const { base } = await startFixture(t, { allowedHosts: ['192.168.1.100:18080'], allowedOrigins: [origin] });
+  const headers = { Host: '192.168.1.100:18080' };
+  assert.equal((await requestWithHost(base, '/api/system', headers)).status, 200);
+  const cors = await requestWithHost(base, '/api/system', { ...headers, Origin: origin }, 'OPTIONS');
+  assert.equal(cors.status, 204);
+  assert.equal(cors.headers['access-control-allow-origin'], origin);
+  assert.equal((await requestWithHost(base, '/api/system', { ...headers, Origin: origin + '.attacker.invalid' })).status, 403);
+  assert.equal((await requestWithHost(base, '/api/system')).status, 403);
+  assert.equal((await requestWithHost(base, '/health/ready')).status, 200);
+  assert.equal((await requestWithHost(base, '/health/live')).status, 200);
+  assert.equal((await requestWithHost(base, '/health/ready', {}, 'POST')).status, 403);
+  assert.equal((await requestWithHost(base, '/health/ready', { Host: 'audit.invalid' })).status, 403);
+  const denied = await startFixture(t, { allowedHosts: [], allowedOrigins: [] });
+  assert.equal((await requestWithHost(denied.base, '/api/system')).status, 403);
+});
+
+test('媒体读取故障及下载取消关闭文件流，服务继续可用', async (t) => {
+  const { Readable } = require('node:stream');
+  const { app, base } = await startFixture(t);
+  const { system, members } = await setupFamily(base);
+  const form = new FormData();
+  const bytes = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  form.append('file', new Blob([bytes]), 'synthetic.png');
+  const uploaded = await fetch(base + '/api/media', { method: 'POST', headers: writeHeaders(system, members[0].id), body: form });
+  assert.equal(uploaded.status, 201);
+  const media = (await uploaded.json()).data;
+  let stream;
+  const mock = t.mock.method(fs, 'createReadStream', () => {
+    stream = new Readable({ read() { this.destroy(Object.assign(new Error('synthetic disk error'), { code: 'EIO' })); } });
+    return stream;
+  });
+  for (const route of ['content', 'download']) {
+    await assert.rejects(async () => {
+      const res = await fetch(`${base}/api/media/${media.id}/${route}`);
+      await res.arrayBuffer();
+    });
+    assert.ok(stream.destroyed);
+    assert.equal((await jsonRequest(base, '/health/ready')).status, 200);
+  }
+  mock.mock.restore();
+  const slow = t.mock.method(fs, 'createReadStream', () => {
+    stream = new Readable({ read() { if (!this.sent) { this.sent = true; this.push(bytes.subarray(0, 1)); } } });
+    return stream;
+  });
+  const res = await fetch(`${base}/api/media/${media.id}/download`);
+  const closed = require('node:events').once(stream, 'close').catch(() => {});
+  await res.body.cancel();
+  await closed;
+  assert.ok(stream.destroyed);
+  slow.mock.restore();
+  assert.equal((await jsonRequest(base, '/api/system')).status, 200);
+  const good = await fetch(`${base}/api/media/${media.id}/download`);
+  assert.deepEqual(Buffer.from(await good.arrayBuffer()), bytes);
+  assert.ok(fs.existsSync(path.join(app.database.dataRoot, 'media')));
+});
+
 async function jsonRequest(base, pathname, { method = 'GET', headers = {}, body } = {}) {
   const response = await fetch(`${base}${pathname}`, {
     method,
@@ -31,10 +126,10 @@ function writeHeaders(system, memberId, extra = {}) {
   };
 }
 
-async function startFixture(t) {
+async function startFixture(t, options = {}) {
   const dataRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'diancai-api-'));
   let instant = new Date('2026-09-09T08:00:00.000Z');
-  const app = createApp({ dataRoot, allowCreate: true, allowUnsupportedSqlite: true, logger: false, clock: () => new Date(instant) });
+  const app = createApp({ dataRoot, allowCreate: true, allowUnsupportedSqlite: true, logger: false, clock: () => new Date(instant), ...options });
   await new Promise((resolve) => app.server.listen(0, '127.0.0.1', resolve));
   const address = app.server.address();
   const base = `http://127.0.0.1:${address.port}`;
