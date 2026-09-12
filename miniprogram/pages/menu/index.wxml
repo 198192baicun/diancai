@@ -1,0 +1,14 @@
+<view class="page">
+  <text class="subtitle">{{date}} · {{isArchive ? '已自动归档的完成与取消事项' : '按点菜日期保留记录'}}</text>
+  <picker class="status-picker" mode="selector" range="{{statusOptions}}" range-key="label" value="{{statusIndex}}" bindchange="filter">
+    <view class="picker-box"><text>状态 · {{statusOptions[statusIndex].label}}</text><text class="arrow">⌄</text></view>
+  </picker>
+  <view class="stack">
+    <menu-card wx:for="{{items}}" wx:key="id" item="{{item}}" bindopen="openItem" bindprimary="cardPrimary" />
+    <empty-state wx:if="{{!loading && !items.length}}" title="这里还没有事项" description="可以查看其他状态，或到菜品库选菜。" />
+    <view wx:if="{{loading}}" class="loading"><view class="spinner"></view></view>
+  </view>
+  <view wx:if="{{isArchive && total}}" class="actions"><button class="btn-primary" bindtap="repeat">选择菜品，再来一次</button></view>
+</view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

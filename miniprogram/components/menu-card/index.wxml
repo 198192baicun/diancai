@@ -1,0 +1,16 @@
+<view class="card">
+  <view class="main" bindtap="open">
+    <food-thumb tone="{{tone}}" src="{{coverURL}}" />
+    <view class="info">
+      <text class="name">{{item.dishName}}</text>
+      <text class="meta">{{item.orderedName}}点的{{item.cookName ? ' · ' + item.cookName + '做' : ''}}</text>
+      <text wx:if="{{item.note}}" class="meta note-text">{{item.note}}</text>
+    </view>
+  </view>
+  <view class="side">
+    <text class="badge {{item.status}}">{{statusLabel}}</text>
+    <view wx:if="{{primaryLabel}}" class="mini" aria-role="button" aria-label="{{primaryLabel}}" catchtap="primary">
+      <text class="mini-label">{{primaryLabel}}</text>
+    </view>
+  </view>
+</view>

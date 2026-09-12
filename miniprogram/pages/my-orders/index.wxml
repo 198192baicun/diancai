@@ -1,0 +1,14 @@
+<view class="page">
+  <text class="h1">我的点菜</text>
+  <text class="subtitle">只显示当前成员点过的事项；历史状态和原日期长期保留。</text>
+  <picker class="status-picker" mode="selector" range="{{statusOptions}}" range-key="label" value="{{statusIndex}}" bindchange="filter">
+    <view class="picker-box"><text>状态 · {{statusOptions[statusIndex].label}}</text><text class="arrow">⌄</text></view>
+  </picker>
+  <view class="stack">
+    <menu-card wx:for="{{items}}" wx:key="id" item="{{item}}" bindopen="open" bindprimary="primary" />
+    <empty-state wx:if="{{!loading && !items.length}}" title="这里还没有点菜记录" description="到家庭菜品里选几道想吃的菜吧。" />
+    <view wx:if="{{loading}}" class="loading"><view class="spinner"></view></view>
+  </view>
+</view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

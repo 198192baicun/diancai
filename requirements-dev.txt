@@ -1,0 +1,9 @@
+# Existing Python check/build dependencies; no application runtime dependencies.
+PyYAML==6.0.3
+playwright==1.55.0
+Pillow==11.3.0
+
+# Transitive dependencies pinned for reproducible check environments.
+greenlet==3.5.5
+pyee==13.0.1
+typing_extensions==4.16.0

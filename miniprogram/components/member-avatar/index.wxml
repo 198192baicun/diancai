@@ -1,0 +1,1 @@
+<image wx:if="{{src}}" src="{{src}}" class="avatar" mode="aspectFill" catchtap="preview" /><view wx:else class="avatar">{{initial}}</view>

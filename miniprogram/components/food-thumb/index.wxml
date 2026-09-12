@@ -1,0 +1,4 @@
+<view class="food {{tone}} {{large ? 'large' : ''}}">
+  <image wx:if="{{src && !failed}}" class="img" src="{{src}}" mode="aspectFill" catchtap="preview" lazy-load binderror="imageError" />
+  <block wx:else><view class="plate"></view><view class="shape"></view></block>
+</view>

@@ -1,0 +1,112 @@
+{
+  "sqliteVersion": "3.49.1",
+  "tests": [
+    {
+      "id": "test_01_schema_and_foreign_keys",
+      "status": "passed"
+    },
+    {
+      "id": "test_02_one_family",
+      "status": "passed"
+    },
+    {
+      "id": "test_03_integer_rating",
+      "status": "passed"
+    },
+    {
+      "id": "test_04_rating_range",
+      "status": "passed"
+    },
+    {
+      "id": "test_05_review_requires_completed",
+      "status": "passed"
+    },
+    {
+      "id": "test_06_review_daily_unique_and_immutable",
+      "status": "passed"
+    },
+    {
+      "id": "test_07_review_allows_same_dish_on_next_date",
+      "status": "passed"
+    },
+    {
+      "id": "test_08_real_dates",
+      "status": "passed"
+    },
+    {
+      "id": "test_09_state_shapes",
+      "status": "passed"
+    },
+    {
+      "id": "test_10_terminal_no_return",
+      "status": "passed"
+    },
+    {
+      "id": "test_11_only_one_active_vote",
+      "status": "passed"
+    },
+    {
+      "id": "test_12_ballot_candidate_must_belong",
+      "status": "passed"
+    },
+    {
+      "id": "test_13_member_can_select_multiple_candidates",
+      "status": "passed"
+    },
+    {
+      "id": "test_14_no_ballot_after_closed",
+      "status": "passed"
+    },
+    {
+      "id": "test_15_winner_candidate_fk",
+      "status": "passed"
+    },
+    {
+      "id": "test_16_vote_source_unique",
+      "status": "passed"
+    },
+    {
+      "id": "test_17_media_snapshot_protected",
+      "status": "passed"
+    },
+    {
+      "id": "test_18_file_limit",
+      "status": "passed"
+    },
+    {
+      "id": "test_19_cancelled_actor_shape",
+      "status": "passed"
+    },
+    {
+      "id": "test_20_two_connection_claim",
+      "status": "passed"
+    },
+    {
+      "id": "test_21_receipt_scope_unique",
+      "status": "passed"
+    },
+    {
+      "id": "test_22_transaction_rollback",
+      "status": "passed"
+    },
+    {
+      "id": "test_23_family_timezone_is_fixed",
+      "status": "passed"
+    },
+    {
+      "id": "test_24_family_timezone_cannot_be_null_or_changed",
+      "status": "passed"
+    },
+    {
+      "id": "test_25_v1_migration_preserves_duplicate_daily_reviews",
+      "status": "passed"
+    },
+    {
+      "id": "test_26_completion_photo_state_and_media_fk",
+      "status": "passed"
+    }
+  ],
+  "passed": 26,
+  "total": 26,
+  "scope": "Temporary database DDL and two-connection conditional update; not HTTP API."
+}

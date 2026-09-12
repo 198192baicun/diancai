@@ -1,0 +1,1 @@
+<text class="time">{{labelPrefix}} {{label}} · 北京时间</text><text wx:if="{{menuDate}}" class="time">菜单日期 {{menuDate}}</text>

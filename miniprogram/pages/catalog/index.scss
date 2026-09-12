@@ -1,0 +1,16 @@
+.dish-row { width:100%; min-width:0; display:flex; align-items:center; gap:16rpx; padding:20rpx; overflow:hidden; }
+.dish-row > .row { flex:1; width:0; min-width:0; }
+.category-picker { display:block; width:100%; margin:24rpx 0; }
+.category-select { width:100%; min-height:88rpx; padding:14rpx 20rpx; border:1rpx solid var(--line); border-radius:22rpx; background:#fff; display:flex; align-items:center; gap:20rpx; }
+.category-label { display:block; color:var(--muted); font-size:19rpx; line-height:1.3; }
+.category-value { display:block; margin-top:4rpx; color:var(--ink); font-size:25rpx; line-height:1.35; font-weight:650; }
+.category-arrow { color:#8b95a3; font-size:30rpx; line-height:1; flex:0 0 auto; }
+
+.quantity {display:flex;align-items:center;gap:10rpx;flex-shrink:0;}
+.quantity button.btn-sub {width:64rpx;min-height:80rpx;padding:0;background:#edf3ff;color:#2366db;display:flex;align-items:center;justify-content:center;}
+
+.dish-row.selected { flex-wrap:wrap; }
+.dish-row.selected > .row { flex-basis:100%; width:100%; }
+.quantity.selected { width:100%; padding-top:12rpx; border-top:1rpx solid var(--line); justify-content:flex-end; }
+.quantity-label { margin-right:auto; }
+.quantity button.btn-sub:not([size='mini']), .quantity button.btn-add:not([size='mini']) { width:44px; min-width:44px; height:44px; min-height:44px; flex:0 0 44px; font-size:26px; }

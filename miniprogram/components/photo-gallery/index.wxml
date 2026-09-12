@@ -1,0 +1,1 @@
+<view class="photos"><image wx:for="{{urls}}" wx:key="*this" src="{{item}}" data-src="{{item}}" catchtap="preview" mode="aspectFill" /></view>

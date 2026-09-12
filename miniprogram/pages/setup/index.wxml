@@ -1,0 +1,8 @@
+<view class="page">
+  <text class="h1">给家常饭一个名字</text><text class="subtitle">只在服务首次使用时设置。</text>
+  <label class="field"><text class="field-label">家庭名称 *</text><input class="input" maxlength="30" value="{{familyName}}" bindinput="onFamilyName" /></label>
+  <label class="field"><text class="field-label">初始成员（每行一位）*</text><textarea class="textarea" maxlength="500" value="{{membersText}}" bindinput="onMembers" /></label>
+  <label class="field"><text class="field-label">家庭业务时区</text><view class="picker-box"><text>北京时间 · Asia/Shanghai</text><text class="muted">固定</text></view></label>
+  <text class="small muted">家庭日期统一按北京时间计算，日界线为 00:00；04:00 是停服备份时间，不是菜单日界线。</text>
+  <view class="actions"><button class="btn-primary" loading="{{saving}}" disabled="{{saving}}" bindtap="save">创建并选择成员</button></view>
+</view>

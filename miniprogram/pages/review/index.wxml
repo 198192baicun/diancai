@@ -1,0 +1,13 @@
+<view class="page" wx:if="{{item}}">
+  <view class="card row"><food-thumb tone="other" /><view><text class="h3">{{item.dishName}}</text><text class="small muted">{{item.cookName}}做的 · {{item.menuDate}}</text></view></view>
+  <text class="subtitle mt">这道菜，合不合口味？</text>
+  <view wx:if="{{alreadySubmitted}}" class="note">当天已经评价过这道菜。评价提交后不能修改；下一个业务日期完成这道菜后可以再次评价。</view>
+  <block wx:else>
+    <view class="stars"><button wx:for="{{stars}}" wx:key="value" class="star {{item <= rating ? 'on' : ''}}" data-rating="{{item}}" bindtap="rate">★</button></view>
+    <text class="small muted center">{{rating ? rating + ' 星' : '请选择 1—5 星'}}</text>
+    <label class="field"><text class="field-label">想说的话（选填）</text><textarea class="textarea" maxlength="1000" value="{{comment}}" bindinput="commentInput" placeholder="例如：咸淡刚好，下次还想吃。" /></label>
+    <voice-note editable="{{true}}" disabled="{{saving}}" mediaId="{{voiceMediaId}}" bindchange="voiceChange" bindbusy="voiceBusy" />
+    <button class="btn-primary" disabled="{{voiceBusy || !rating || saving}}" loading="{{saving}}" bindtap="save">提交评价</button>
+    <view class="note mt">同一成员对同一道菜每天只能评价一次，提交后不能修改。</view>
+  </block>
+</view>

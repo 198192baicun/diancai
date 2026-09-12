@@ -1,0 +1,15 @@
+<view class="page">
+  <text class="h1">导入图文教程</text>
+  <text class="subtitle mb">保留正文、图片和来源，先进入本机编辑草稿，核对后再保存菜品。</text>
+  <label class="field"><text class="field-label">分享链接或分享文案</text><textarea class="textarea" value="{{shareText}}" data-field="shareText" bindinput="field" maxlength="10000" placeholder="粘贴小红书分享内容" /></label>
+  <button class="btn-primary" disabled="{{busy}}" loading="{{busy}}" bindtap="importLink">{{busy ? '正在导入，请稍候' : '读取公开图文'}}</button>
+  <view wx:if="{{message}}" class="note mt">{{message}}</view>
+  <view class="note mt">仅支持小红书公开图文链接。无法读取时，可使用下方图片导入。配图保留平台提供的版本，可能已经被平台压缩；不识别或猜测图中文字。</view>
+  <view class="section-head"><text class="h2">从已保存图片导入</text></view>
+  <text class="small muted">在原应用保存教程图片后选择，按顺序排列。图片按原字节上传，可能包含拍摄信息。</text>
+  <label class="field"><text class="field-label">菜名</text><input class="input" maxlength="50" value="{{name}}" data-field="name" bindinput="field" /></label>
+  <label class="field"><text class="field-label">原文（选填）</text><textarea class="textarea" maxlength="20000" value="{{text}}" data-field="text" bindinput="field" /></label>
+  <view wx:for="{{files}}" wx:key="index" class="card mt"><text>第 {{index+1}} 张</text><image data-src="{{item.path}}" catchtap="previewStandalone" src="{{item.path}}" mode="widthFix" class="step-image" /><button class="btn-text" data-index="{{index}}" disabled="{{busy}}" bindtap="remove">移除</button></view>
+  <button class="btn-secondary mt" disabled="{{busy}}" bindtap="choose">选择教程图片</button>
+  <button class="btn-primary mt" disabled="{{busy}}" loading="{{busy}}" bindtap="importFiles">将图文放入编辑草稿</button>
+</view>

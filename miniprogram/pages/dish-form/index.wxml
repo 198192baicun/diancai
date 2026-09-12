@@ -1,0 +1,33 @@
+<view class="page"><view class="field"><text class="field-label">菜品介绍语音（选填）</text><voice-note editable="{{true}}" disabled="{{saving || loading}}" mediaId="{{voiceMediaId}}" bindchange="voiceChange" bindbusy="voiceBusy" /></view>
+<view wx:if="{{draftStatus}}" class="note mb">{{draftStatus}}</view>
+<view wx:if="{{latest}}" class="card mb"><text class="h2">菜谱已有更新，请对照选择</text><view wx:for="{{conflicts}}" wx:key="key" class="mt"><text class="h3">{{item.label}}</text><text class="small">我的内容：{{item.localText || '空'}}</text><voice-note mediaId="{{item.localVoiceId}}" /><block wx:for="{{item.localImages}}" wx:for-item="imageURL" wx:key="*this"><image data-src="{{imageURL}}" catchtap="previewStandalone" src="{{imageURL}}" class="step-image" mode="widthFix" /></block><text class="small">最新内容：{{item.remoteText || '空'}}</text><voice-note mediaId="{{item.remoteVoiceId}}" /><block wx:for="{{item.remoteImages}}" wx:for-item="imageURL" wx:key="*this"><image data-src="{{imageURL}}" catchtap="previewStandalone" src="{{imageURL}}" class="step-image" mode="widthFix" /></block><view class="split"><button class="btn-secondary" data-key="{{item.key}}" data-choice="local" bindtap="chooseConflict">{{item.choice === 'local' ? '✓ ' : ''}}保留我的</button><button class="btn-secondary" data-key="{{item.key}}" data-choice="remote" bindtap="chooseConflict">{{item.choice === 'remote' ? '✓ ' : ''}}使用最新</button></view></view><button class="btn-primary mt" disabled="{{!mergeReady}}" bindtap="mergeConflict">按选择继续编辑</button></view>
+  <text class="small muted">这份菜谱由全家共享。编辑内容自动保存在本机，点击“保存菜品”后家人才会看到。</text>
+  <label wx:if="{{!loading}}" class="field"><text class="field-label">菜名 *</text><input class="input" maxlength="50" value="{{name}}" data-field="name" bindinput="fieldInput" /></label>
+  <label wx:if="{{!loading}}" class="field"><text class="field-label">分类 *</text><picker range="{{categoryNames}}" value="{{categoryIndex}}" bindchange="categoryChange"><view class="picker-box"><text>{{categoryNames[categoryIndex] || '请选择分类'}}</text><text class="arrow">›</text></view></picker></label>
+  <label wx:if="{{!loading}}" class="field"><text class="field-label">预计时长（分钟）</text><input class="input" type="number" value="{{estimatedMinutes}}" data-field="estimatedMinutes" bindinput="fieldInput" placeholder="选填，1—1440" /></label>
+  <label wx:if="{{!loading}}" class="field"><text class="field-label">简介</text><textarea class="textarea" maxlength="1000" value="{{introduction}}" data-field="introduction" bindinput="fieldInput" /></label>
+
+  <view wx:if="{{!loading}}" class="field"><text class="field-label">封面原文件（选填）</text><view class="file-box">
+    <image data-src="{{coverPreviewURL}}" catchtap="previewStandalone" wx:if="{{coverPreviewURL && !coverPreviewUnavailable}}" class="media-preview" src="{{coverPreviewURL}}" mode="aspectFit" binderror="coverPreviewError" />
+    <text wx:if="{{coverMedia}}" class="small">{{coverMedia.originalName}} · {{coverSize}} · {{coverMedia.detectedMime}}</text>
+    <text wx:if="{{coverMedia && coverPreviewUnavailable}}" class="help">原文件已上传，但当前设备无法显示预览；保存菜品后仍会保留该文件引用。</text>
+    <text wx:if="{{!coverMediaId}}" class="small muted">尚未选择封面</text>
+    <text class="help">单文件上限 50 MiB（52,428,800 字节）。原文件按字节保存，不压缩、保留拍摄信息；原图可能含设备或位置信息。</text>
+    <view class="split mt-sm"><button class="btn-secondary" data-target="cover" bindtap="chooseMedia">选择原文件</button><button wx:if="{{coverMedia}}" class="btn-secondary" bindtap="removeCover">移除引用</button></view>
+  </view></view>
+
+  <view wx:if="{{uploading}}" class="banner info mb"><view class="grow"><text class="banner-title">正在上传原文件 · {{uploadPercent}}%</text><view class="upload-progress"><view class="upload-progress-inner" style="width:{{uploadPercent}}%"></view></view></view><button class="btn-mini" bindtap="cancelUpload">取消</button></view>
+
+  <view class="section-head"><text class="h2">做法步骤</text><button class="btn-text" disabled="{{loading}}" bindtap="addStep">＋ 添加一步</button></view>
+  <view class="stack">
+    <view wx:for="{{steps}}" wx:key="key" class="card">
+      <view class="row between"><text class="small" style="font-weight:700">步骤 {{index + 1}}</text><view><button wx:if="{{index > 0}}" class="btn-text inline" data-index="{{index}}" bindtap="stepUp">上移</button><button class="btn-text inline" data-index="{{index}}" bindtap="removeStep">移除</button></view></view>
+      <textarea class="textarea small-area mt-sm" maxlength="2000" data-index="{{index}}" value="{{item.content}}" bindinput="stepInput" placeholder="写下这一步怎么做" />
+      <image data-src="{{item.previewURL}}" catchtap="previewStandalone" wx:if="{{item.previewURL}}" class="step-preview mt-sm" src="{{item.previewURL}}" mode="widthFix" />
+      <text wx:if="{{item.media}}" class="small muted mt-sm">步骤图片：{{item.media.originalName}} · {{item.sizeText}}</text>
+      <view class="split mt-sm"><button class="btn-secondary" data-target="step" data-index="{{index}}" bindtap="chooseMedia">{{item.media ? '更换原图' : '添加步骤图片'}}</button><button wx:if="{{item.media}}" class="btn-secondary" data-index="{{index}}" bindtap="removeStepMedia">移除引用</button></view>
+    </view>
+    <view wx:if="{{!steps.length}}" class="note">可以先保存菜品，以后再补充做法。每一步正文必填；最多 50 步。</view>
+  </view>
+  <view class="actions"><button class="btn-primary" loading="{{saving}}" disabled="{{saving || uploading || loading || latest}}" bindtap="save">保存菜品</button></view>
+</view>

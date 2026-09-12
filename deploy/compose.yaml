@@ -1,0 +1,45 @@
+# 应用镜像实现并验收后使用。本文件不包含业务服务代码。
+name: family-meal
+services:
+  app:
+    platform: linux/amd64
+    image: "${APP_IMAGE:?请设置经过构建验证的精确镜像tag或digest}"
+    init: true
+    restart: unless-stopped
+    user: "${APP_UID:-10001}:${APP_GID:-10001}"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    stop_grace_period: 45s
+    environment:
+      NODE_ENV: production
+      HOST: "0.0.0.0"
+      PORT: "3000"
+      DATA_ROOT: /data
+      FAMILY_TIMEZONE: Asia/Shanghai
+      TZ: Asia/Shanghai
+      EXPECTED_HOST: "${HOST_LAN_IP:?请设置宿主机具体局域网IPv4地址}:${HOST_PORT:-8080}"
+    ports:
+      - target: 3000
+        published: "${HOST_PORT:-8080}"
+        host_ip: "${HOST_LAN_IP:?必须明确局域网绑定地址}"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: "${DATA_ROOT:?请设置已初始化的数据根目录绝对路径}"
+        target: /data
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m,mode=1777
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health/ready',{signal:AbortSignal.timeout(3000)}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

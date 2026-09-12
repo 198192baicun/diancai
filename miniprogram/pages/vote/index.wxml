@@ -1,0 +1,24 @@
+<view class="page" wx:if="{{vote}}">
+  <text class="badge {{vote.status === 'active' ? 'pending' : (vote.status === 'finished' ? 'completed' : 'cancelled')}}">{{statusLabel}}</text>
+  <text class="h1 mt">{{vote.title}}</text><text class="subtitle mb">{{vote.initiatorName}}发起 · {{vote.participantCount}} 人已投票 · 当前 {{vote.enabledMemberCount}} 位启用成员</text>
+  <view wx:if="{{vote.status === 'finished'}}" class="hero mb"><text class="small muted">这一次，大家选了</text><text class="h2 mt-sm">{{winnerName}}</text><text class="subtitle">{{winnerVotes}} 票{{tieChosen ? ' · 由发起人在并列最高中选定' : ''}}</text></view>
+  <view class="stack">
+    <view wx:for="{{candidates}}" wx:key="dishId" class="vote-card {{item.selected ? 'selected' : ''}}">
+      <view class="row"><food-thumb tone="other" src="{{item.coverURL}}" /><view class="grow"><text class="h3">{{item.dishName}}</text><text class="small muted">{{item.selected ? '我的选择' : (item.winner ? '本轮获胜' : '')}}</text></view><text class="h3">{{item.votes}} <text class="small muted">票</text></text></view>
+      <view class="vote-bar"><view class="vote-bar-inner" style="width:{{item.percent}}%"></view></view>
+      <button wx:if="{{vote.status === 'active' && !vote.votingClosedAt}}" class="btn-secondary" data-dish="{{item.dishId}}" disabled="{{ballotSaving}}" bindtap="ballot">{{item.selected ? '取消选择' : '选择这道菜'}}</button>
+    </view>
+  </view>
+  <view wx:if="{{vote.status === 'active' && !vote.votingClosedAt}}" class="card mt"><textarea class="textarea" maxlength="200" value="{{note}}" bindinput="noteInput" disabled="{{ballotSaving}}" placeholder="为什么想吃？投票备注（选填）" /><voice-note editable="{{true}}" disabled="{{ballotSaving}}" mediaId="{{voiceMediaId}}" bindchange="voiceChange" bindbusy="voiceBusy" /></view><view class="actions"><block wx:if="{{vote.status === 'active' && !vote.votingClosedAt}}"><text class="small muted">{{ballotDirty ? '有未保存的选择' : '选择已保存'}}</text><button class="btn-primary" disabled="{{!ballotDirty || ballotSaving || voiceBusy}}" loading="{{ballotSaving}}" bindtap="saveBallot">保存选择（{{selectedIds.length}} 道）</button></block>
+    <button wx:if="{{vote.status === 'active' && owner}}" class="btn-primary" bindtap="finish">结束投票</button>
+    <button wx:if="{{vote.status === 'active' && owner}}" class="btn-danger" bindtap="cancel">取消本轮投票</button>
+    <view wx:if="{{vote.status === 'active' && !vote.votingClosedAt}}" class="note">每位成员可以选择一道或多道候选菜，勾选后点击“保存选择”；结束前可取消或增选。所有当前启用成员都投过后自动停止收票；最高票并列时由发起人选定。</view>
+    <button wx:if="{{vote.status === 'finished' && !vote.addedItem}}" class="btn-primary" bindtap="addWinner">将获胜菜加入今日菜单</button>
+    <button wx:if="{{vote.addedItem}}" class="btn-secondary" bindtap="openAdded">已加入 {{vote.addedItem.menuDate}} · 查看事项 ›</button>
+    <view wx:if="{{vote.status === 'cancelled'}}" class="note">本轮已取消，没有获胜菜。投过的票和取消结果会保留。</view>
+    <button wx:if="{{vote.status !== 'active' && !hasActiveElsewhere}}" class="btn-secondary" bindtap="newVote">发起新一轮</button>
+  </view>
+<view class="section-head"><text class="h2">投票记录</text><button class="btn-text" bindtap="history">全部轮次 ›</button></view><view wx:for="{{ballots}}" wx:key="memberId" class="card mt-sm"><text class="h3">{{item.memberName}}</text><text>{{item.names || "未选择候选"}}</text><text class="subtitle">{{item.note}}</text><voice-note mediaId="{{item.voiceMediaId}}" /></view>
+  <view wx:if="{{vote.addedItem}}" class="note mt">每轮最多加入一次；即使这条菜单事项被取消，也不会再次解锁。</view>
+</view>
+<view wx:else class="page"><view class="loading"><view class="spinner"></view></view></view>

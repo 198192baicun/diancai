@@ -1,0 +1,10 @@
+<view class="page">
+  <label class="field"><text class="field-label">投票标题</text><input class="input" maxlength="50" value="{{title}}" bindinput="titleInput" /></label>
+  <text class="subtitle mb">选择 2—10 道不同的菜 · 已选 {{selectedCount}} 道</text>
+  <view class="stack">
+    <view wx:for="{{dishes}}" wx:key="id" class="checkbox-row" data-index="{{index}}" bindtap="toggle"><checkbox class="checkbox" checked="{{item.selected}}" /><food-thumb tone="{{item.tone}}" src="{{item.coverURL}}" /><text class="grow">{{item.name}}</text></view>
+  </view>
+  <view class="actions"><button class="btn-primary" disabled="{{selectedCount < 2 || selectedCount > 10 || saving}}" loading="{{saving}}" bindtap="save">发起投票</button></view>
+</view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

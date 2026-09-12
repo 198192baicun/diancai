@@ -1,0 +1,114 @@
+{
+  "reportDate": "2026-09-10",
+  "verifiedAtUtc": "2026-09-10T10:49:55.610621+00:00",
+  "artifactVersion": "1.0",
+  "decision": "01A 02B 03A 04A 05A 06A 07A 08A 09A 10A 11A",
+  "environment": {
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "python": "3.13.5",
+    "pythonSqlite": "3.46.1",
+    "productionPlatform": "linux/amd64",
+    "familyTimezone": "Asia/Shanghai",
+    "productionNodeBranch": 24,
+    "productionSqliteMinimum": "3.51.3",
+    "productionRuntimeValidated": false,
+    "wechatDevToolsValidated": false,
+    "wechatDeviceValidated": false
+  },
+  "currentExecution": [
+    {
+      "level": "http_sqlite_development_integration",
+      "command": "node --test tests/server.test.cjs",
+      "passed": 1,
+      "total": 1,
+      "evidence": "server.tap"
+    },
+    {
+      "level": "native_miniprogram_static_contract",
+      "command": "node --test tests/miniprogram-static.test.cjs",
+      "passed": 6,
+      "total": 6,
+      "evidence": "miniprogram-static.tap"
+    },
+    {
+      "level": "native_miniprogram_typescript",
+      "command": "npm run typecheck",
+      "status": "passed",
+      "evidence": "typecheck.txt"
+    },
+    {
+      "level": "prototype_domain",
+      "command": "node --test tests/domain.test.cjs",
+      "passed": 29,
+      "total": 29,
+      "evidence": "domain.tap"
+    },
+    {
+      "level": "sqlite_ddl_and_temporary_transactions",
+      "command": "python3 tests/schema_test.py",
+      "passed": 22,
+      "total": 22,
+      "evidence": "schema.json"
+    },
+    {
+      "level": "static_deployment_contracts_and_local_time_tools",
+      "command": "python3 tests/deployment_test.py",
+      "passed": 14,
+      "total": 14,
+      "evidence": "deployment.json"
+    },
+    {
+      "level": "direct_server_smoke",
+      "command": "temporary HTTP server: GET /health/live and GET /api/system",
+      "status": "passed",
+      "evidence": "server-smoke.json"
+    },
+    {
+      "level": "prototype_build",
+      "command": "python3 tools/build_prototype.py",
+      "status": "passed",
+      "sha256": "0b8c55daca28a891a69a298ec1ae8e60559387ee8078c249d90192cf4d9f6984"
+    },
+    {
+      "level": "browser_prototype_rerun",
+      "command": "python3 tests/browser_test.py",
+      "status": "not_counted_timeout",
+      "detail": "Earlier current-session rerun exceeded the available headless-browser execution window; no pass is claimed for that rerun."
+    }
+  ],
+  "retainedSourceEvidence": {
+    "browserPrototype": {
+      "passed": 23,
+      "total": 23,
+      "pageErrors": [],
+      "evidence": "browser.json",
+      "browser": "Chromium",
+      "browserVersion": "144.0.7559.96",
+      "scope": "Browser prototype only; no HTTP API, actual multi-device concurrency, WeChat, Linux Docker or media-upload validation.",
+      "note": "Retained design-package evidence. The prototype was rebuilt in the current run; the generated HTML SHA-256 matches the uploaded interaction prototype byte-for-byte."
+    }
+  },
+  "prototypeHtmlSha256": "0b8c55daca28a891a69a298ec1ae8e60559387ee8078c249d90192cf4d9f6984",
+  "agents": [
+    "AGENTS.md",
+    "contracts/AGENTS.md",
+    "deploy/AGENTS.md",
+    "docs/AGENTS.md",
+    "miniprogram/AGENTS.md",
+    "prototype/AGENTS.md",
+    "server/AGENTS.md",
+    "server/migrations/AGENTS.md",
+    "tests/AGENTS.md",
+    "tools/AGENTS.md"
+  ],
+  "boundaries": [
+    "The native miniprogram passed TypeScript and static contract checks; WeChat DevTools compilation was not available in this execution environment.",
+    "No iOS/Android real-device or formal WeChat release acceptance was executed.",
+    "The HTTP/SQLite development service was exercised through real HTTP requests against temporary data. Production Fastify/Node 24/linux-amd64 image acceptance remains separate.",
+    "The shell runtime used for HTTP integration is not the approved production runtime; production SQLite must actually report >=3.51.3.",
+    "Compose and backup policy checks are static/design-level evidence, not a deployed Docker image or installed maintenance job.",
+    "Backup/restore/media-GC maintenance commands are not implemented in this artifact.",
+    "The current full Playwright prototype rerun timed out; the retained 23/23 browser evidence is not relabeled as a new rerun."
+  ]
+}

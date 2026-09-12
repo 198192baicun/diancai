@@ -1,0 +1,1 @@
+<view class="empty"><view class="mark">⌁</view><text class="title">{{title}}</text><text class="desc">{{description}}</text><slot /></view>

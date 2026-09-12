@@ -1,0 +1,15 @@
+<view class="page">
+  <view class="row between mb"><text class="small muted">所有启用成员均可管理</text><button class="btn-text" bindtap="create">＋ 新建菜品</button></view>
+  <view class="stack">
+    <view wx:for="{{dishes}}" wx:key="id" class="card">
+      <view class="row" data-id="{{item.id}}" bindtap="edit"><food-thumb tone="{{item.tone}}" src="{{item.coverURL}}" /><view class="grow"><text class="h3">{{item.name}}</text><text class="small muted">{{item.categoryName}} · 第 {{item.revision}} 版资料</text></view><text class="badge {{item.active ? 'pending' : 'cancelled'}}">{{item.active ? '上架' : '下架'}}</text></view>
+      <view class="row between mt-sm"><text class="small muted">菜谱与历史长期保留</text><button class="btn-text" data-id="{{item.id}}" catchtap="toggle">{{item.active ? '下架' : '上架'}}</button></view>
+    </view>
+    <empty-state wx:if="{{!loading && !dishes.length}}" title="还没有菜品" description="新建第一道家庭菜谱吧。"><button class="btn-primary mt" bindtap="create">新建菜品</button></empty-state>
+    <view wx:if="{{loading}}" class="loading"><view class="spinner"></view></view>
+  </view>
+</view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>
+
+<view class="page"><button class="btn-secondary" bindtap="importRecipe">导入图文教程</button></view>

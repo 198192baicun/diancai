@@ -1,0 +1,18 @@
+<view class="page">
+  <text class="h1">我的评价</text>
+  <text class="subtitle mb">每天对同一道菜最多一条评价；提交后不能修改。</text>
+  <view class="stack">
+    <view wx:for="{{rows}}" wx:key="key" class="card review-entry">
+      <button class="review-open" data-id="{{item.item.id}}" bindtap="open">
+        <view class="row between"><view class="grow"><text class="h3">{{item.item.dishName}}</text><text class="small muted">{{item.dateText}}</text></view><text class="arrow">›</text></view>
+      </button>
+      <view class="divider"></view>
+      <view class="row between"><text class="rating">{{item.starText}}</text><text class="small muted">已提交</text></view>
+      <review-time value="{{item.review.createdAt}}" menuDate="{{item.review.reviewDate}}" /><voice-note mediaId="{{item.review.voiceMediaId}}" /><text class="review-card-text">{{item.review.comment || '只留下了评分'}}</text>
+    </view>
+    <empty-state wx:if="{{!loading && !rows.length}}" title="还没有评价" description="菜品完成后，可以为这一次做菜留下评分。" />
+    <view wx:if="{{loading}}" class="loading"><view class="spinner"></view></view>
+  </view>
+</view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

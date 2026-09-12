@@ -1,0 +1,12 @@
+<view class="page">
+  <text class="subtitle mb">选中的菜会进入 {{memberName}} 的已选列表。备注默认继承，也可以在这里清空或修改。</text>
+  <view class="stack">
+    <view wx:for="{{items}}" wx:key="id" class="checkbox-row {{item.available ? '' : 'disabled'}}">
+      <checkbox class="checkbox" checked="{{item.selected}}" disabled="{{!item.available}}" data-index="{{index}}" bindtap="toggle" />
+      <view class="grow"><text class="h3">{{item.dishName}}</text><text wx:if="{{!item.available}}" class="small muted">目前已下架，不能复点</text><textarea wx:else class="textarea small-area mt-sm" maxlength="200" data-index="{{index}}" value="{{item.note}}" bindinput="noteInput" placeholder="本次备注" /></view>
+    </view>
+  </view>
+  <view class="actions"><button class="btn-primary" disabled="{{!selectedCount}}" bindtap="add">加入已选（{{selectedCount}}）</button></view>
+</view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

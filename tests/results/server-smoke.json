@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "live": {
+    "status": "alive"
+  },
+  "initialized": false,
+  "timezone": "Asia/Shanghai",
+  "today": "2026-09-10",
+  "schemaVersion": 1,
+  "apiVersion": "1.0",
+  "sqliteVersion": "3.49.1",
+  "node": "v22.16.0"
+}

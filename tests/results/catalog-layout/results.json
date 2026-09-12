@@ -1,0 +1,50 @@
+{
+  "kind": "WXML/CSS browser approximation, not WeChat runtime",
+  "results": [
+    {
+      "width": 320,
+      "selected": 0,
+      "status": "passed"
+    },
+    {
+      "width": 320,
+      "selected": 1,
+      "status": "passed"
+    },
+    {
+      "width": 320,
+      "selected": 30,
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "selected": 0,
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "selected": 1,
+      "status": "passed"
+    },
+    {
+      "width": 375,
+      "selected": 30,
+      "status": "passed"
+    },
+    {
+      "width": 430,
+      "selected": 0,
+      "status": "passed"
+    },
+    {
+      "width": 430,
+      "selected": 1,
+      "status": "passed"
+    },
+    {
+      "width": 430,
+      "selected": 30,
+      "status": "passed"
+    }
+  ]
+}

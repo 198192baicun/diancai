@@ -1,0 +1,10 @@
+<view class="page">
+  <view class="card">
+    <button class="list-link" bindtap="rename"><text>家庭名称</text><text class="small muted">{{familyName}}　›</text></button>
+    <view class="list-link"><text>业务时区</text><text class="small muted">北京时间 · Asia/Shanghai</text></view>
+    <view class="list-link"><text>家庭日期</text><text class="small muted">{{today}}</text></view>
+    <button class="list-link" bindtap="connect"><text>服务地址</text><text class="small muted">{{baseURL}}　›</text></button>
+  </view>
+  <view class="note mt">家庭服务位于局域网。计划每日北京时间 04:00 停服全量备份，完成后恢复服务；04:00 不是业务日界线。服务不可达时只保留本机草稿和待确认意图，不会根据时间猜测正在备份。</view>
+  <view class="card mt"><text class="h3">服务识别</text><text class="small muted mt-sm">实例：{{instanceId || '未初始化'}}\n数据代次：{{dataEpoch || '未初始化'}}\nAPI：{{apiVersion}} · Schema：{{schemaVersion}}</text></view>
+</view>

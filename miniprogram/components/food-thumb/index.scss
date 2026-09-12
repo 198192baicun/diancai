@@ -1,0 +1,12 @@
+:host { display:block; min-width:0; }
+view, image { box-sizing:border-box; }
+.food { width:94rpx; height:94rpx; border-radius:24rpx; position:relative; overflow:hidden; flex:0 0 auto; background:#f7ede1; display:flex; align-items:center; justify-content:center; }
+.food.green { background:#eaf1e5; }.food.soup { background:#f2eddd; }.food.rice { background:#f2eedf; }.food.other { background:#edf1f6; }
+.plate { position:absolute; width:74%; height:74%; border-radius:50%; background:#fffdf4; box-shadow:inset 0 0 0 4rpx #eee7d9; }
+.shape { position:absolute; width:46%; height:40%; border-radius:13rpx; background:#955932; transform:rotate(-12deg); box-shadow:12rpx 8rpx 0 -2rpx #bc7950, -8rpx 9rpx 0 -3rpx #855330; }
+.green .shape { background:#7b985c; box-shadow:8rpx 8rpx 0 #a0b573,-8rpx 8rpx 0 -2rpx #5e8048; border-radius:50% 15% 50% 20%; }
+.soup .shape { background:#d6c793; box-shadow:7rpx 5rpx 0 #e6dcaf; border-radius:50%; }
+.rice .shape { background:#d8cbad; box-shadow:7rpx 6rpx 0 -1rpx #e7dfc8; border-radius:42%; }
+.img { width:100%; height:100%; }
+.large { width:100%; height:360rpx; border-radius:32rpx; }
+.large .plate { width:250rpx; height:250rpx; }.large .shape { width:128rpx; height:106rpx; }

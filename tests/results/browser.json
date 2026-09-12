@@ -1,0 +1,104 @@
+{
+  "browser": "Chromium",
+  "browserVersion": "140.0.7339.16",
+  "mode": "supplied HTML via set_content; test-only localStorage shim; no policy changes",
+  "storageBoundary": "B03 checks JSON persistence payload and new-document reinitialization with same injected store, NOT native file:// storage or real browser restart.",
+  "tests": [
+    {
+      "id": "B01_identity_across_pages",
+      "status": "passed"
+    },
+    {
+      "id": "B02_duplicate_dishes_and_notes",
+      "status": "passed"
+    },
+    {
+      "id": "B03_unknown_serialization_reinitialization_same_intent",
+      "status": "passed"
+    },
+    {
+      "id": "B04_pending_cancel_record",
+      "status": "passed"
+    },
+    {
+      "id": "B05_cook_permissions_and_completion",
+      "status": "passed"
+    },
+    {
+      "id": "B06_overdue_keeps_date",
+      "status": "passed"
+    },
+    {
+      "id": "B07_tie_result_discovery_and_once_only_join",
+      "status": "passed"
+    },
+    {
+      "id": "B08_cancel_vote_and_start_new_round",
+      "status": "passed"
+    },
+    {
+      "id": "B09_history_repeat_unavailable_and_notes",
+      "status": "passed"
+    },
+    {
+      "id": "B10_member_dependency_navigation",
+      "status": "passed"
+    },
+    {
+      "id": "B11_dish_revision_conflict_preserves_input",
+      "status": "passed"
+    },
+    {
+      "id": "B12_offline_form_preserved",
+      "status": "passed"
+    },
+    {
+      "id": "B13_public_dish_creation_and_step_order",
+      "status": "passed"
+    },
+    {
+      "id": "B14_file_metadata_download_only_mock",
+      "status": "passed"
+    },
+    {
+      "id": "B15_first_use_initialization_mock",
+      "status": "passed"
+    },
+    {
+      "id": "B16_switch_member_during_submission",
+      "status": "passed"
+    },
+    {
+      "id": "B17_daily_review_is_single_and_immutable",
+      "status": "passed"
+    },
+    {
+      "id": "B18_claim_conflict_mock",
+      "status": "passed"
+    },
+    {
+      "id": "B19_22_views_at_320_375_430_without_horizontal_overflow",
+      "status": "passed"
+    },
+    {
+      "id": "B20_loading_empty_and_self_contained_resources",
+      "status": "passed"
+    },
+    {
+      "id": "B21_data_epoch_does_not_auto_submit",
+      "status": "passed"
+    },
+    {
+      "id": "B22_initialization_uses_read_only_beijing_time",
+      "status": "passed"
+    },
+    {
+      "id": "B23_settings_shows_plan_without_maintenance_actions",
+      "status": "passed"
+    }
+  ],
+  "passed": 23,
+  "total": 23,
+  "pageErrors": [],
+  "scope": "Browser prototype only; no HTTP API, actual multi-device concurrency, WeChat, Linux Docker or media-upload validation."
+}

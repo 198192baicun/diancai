@@ -1,0 +1,15 @@
+<view class="page">
+  <app-header avatarId="{{avatarId}}" familyName="{{familyName}}" today="{{today}}" memberName="{{memberName}}" bindmember="switchMember" />
+  <text class="h1">吃过的家常味</text><text class="subtitle mb">每一顿都留着记录，想吃就再点一次。</text>
+  <view class="stack mt">
+    <button wx:for="{{days}}" wx:key="menuDate" class="card day-card" data-date="{{item.menuDate}}" bindtap="openDay">
+      <view class="row between"><text class="h3">{{item.dateLabel}}</text><text class="arrow">›</text></view>
+      <text class="small muted">{{item.cooks.length ? "掌勺：" + item.cooks : ""}}</text><photo-gallery ids="{{item.photoMediaIds}}" /><text class="subtitle names">{{item.names}}</text>
+      <view class="row between mt-sm"><text class="small muted">{{item.completedCount}} 道完成 · {{item.itemCount - item.completedCount}} 道取消</text><text class="small muted">{{item.ratingText}}</text></view>
+    </button>
+    <empty-state wx:if="{{!loading && !days.length}}" title="还没有归档记录" description="日期结束后，完成或取消的事项会自动按原日期归档。" />
+    <view wx:if="{{loading}}" class="loading"><view class="spinner"></view></view>
+  </view>
+</view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

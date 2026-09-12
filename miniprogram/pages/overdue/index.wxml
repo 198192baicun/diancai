@@ -1,0 +1,3 @@
+<view class="page"><text class="subtitle mb">接着做，或结束这一次。记录始终保留原日期。</text><view class="stack"><menu-card wx:for="{{items}}" wx:key="id" item="{{item}}" bindopen="openItem" bindprimary="primary" /><empty-state wx:if="{{!loading && !items.length}}" title="都已经安排好了" description="当前没有往日未完成事项。" /></view></view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

@@ -1,0 +1,10 @@
+<view class="head">
+  <view>
+    <text class="eyebrow">FAMILY TABLE</text>
+    <text class="sub">{{familyName}} · {{today}}</text>
+  </view>
+  <button class="member" bindtap="onMember" aria-label="切换家庭成员">
+    <image wx:if="{{avatarSrc}}" class="avatar" src="{{avatarSrc}}" mode="aspectFill" catchtap="previewAvatar" /><view wx:else class="avatar">{{memberInitial}}</view>
+    <text>{{memberName || '选择成员'}}</text>
+  </button>
+</view>

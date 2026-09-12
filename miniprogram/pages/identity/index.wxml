@@ -1,0 +1,11 @@
+<view class="page">
+  <view class="row between"><text class="small muted">{{familyName || '家庭点菜'}}</text><button class="btn-text" bindtap="connect">连接设置</button></view>
+  <view class="mt"><text class="eyebrow">MAKE YOURSELF AT HOME</text><text class="h1 mt-sm">今天，你是谁？</text><text class="subtitle">选一位家庭成员，开始安排家常饭。</text></view>
+  <view class="stack mt">
+    <button wx:for="{{members}}" wx:key="id" class="identity-row" data-id="{{item.id}}" bindtap="choose">
+      <member-avatar mediaId="{{item.avatarMediaId}}" name="{{item.name}}" /><view class="grow"><text class="h3">{{item.name}}</text><text class="small muted">进入家庭菜单</text></view><text class="arrow">›</text>
+    </button>
+    <empty-state wx:if="{{!loading && !members.length}}" title="没有可选成员" description="请检查家庭服务中的成员状态。" />
+  </view>
+  <view class="note mt">成员选择用于记录点菜、做菜和评价的人，不是登录认证。仅供可信家庭局域网使用。</view>
+</view>

@@ -1,0 +1,21 @@
+<view class="page" wx:if="{{dish}}">
+  <food-thumb large="{{true}}" tone="{{tone}}" src="{{coverURL}}" />
+  <view class="row between top mt"><text class="h1 grow">{{dish.name}}</text><text class="badge {{dish.active ? 'pending' : 'cancelled'}}">{{dish.active ? '上架' : '下架'}}</text></view>
+  <text class="subtitle">{{categoryName}}{{dish.estimatedMinutes ? ' · 约 ' + dish.estimatedMinutes + ' 分钟' : ''}} · {{ratingText}}</text>
+  <text class="small muted mt">{{dish.introduction || '暂无简介'}}</text>
+  <voice-note mediaId="{{dish.voiceMediaId}}" /><view wx:if="{{coverMedia && !coverURL}}" class="note mt">封面原文件：{{coverMedia.originalName}} · {{coverSize}}。该格式不支持小程序内联预览，可复制局域网下载地址取回原文件。<button class="btn-text" bindtap="copyCoverDownload">复制下载地址</button></view>
+  <view class="section-head"><text class="h2">怎么做</text><button class="btn-text" bindtap="edit">编辑资料</button></view>
+  <view class="card">
+    <view wx:for="{{steps}}" wx:key="id" class="step"><text class="step-number">{{index + 1}}</text><view class="grow"><text>{{item.content}}</text><image wx:if="{{item.mediaURL}}" class="step-image mt-sm" src="{{item.mediaURL}}" data-src="{{item.mediaURL}}" bindtap="previewImage" mode="widthFix" /><view wx:if="{{item.mediaDownloadOnly}}" class="small muted mt-sm">步骤原图不可内联预览 · <button class="btn-text inline" data-url="{{item.downloadURL}}" bindtap="copyDownload">复制下载地址</button></view></view></view>
+    <text wx:if="{{!steps.length}}" class="small muted">还没有记录做法。所有启用成员都可以补充这道公共菜的资料。</text>
+  </view>
+  <text class="small muted mt">当前菜谱 · {{updatedDate}} 更新。刷新后会读取最新公共菜谱。</text>
+  <view class="section-head"><text class="h2">家人的评价</text><text class="small muted">{{reviewTotal}} 条</text></view>
+  <view class="stack">
+    <view wx:for="{{reviews}}" wx:key="id" class="card"><view class="row between"><text class="small" style="font-weight:700">{{item.memberName}}</text><text class="rating">{{item.starText}}</text></view><review-time value="{{item.createdAt}}" menuDate="{{item.reviewDate}}" /><voice-note mediaId="{{item.voiceMediaId}}" /><text class="review-card-text">{{item.comment || '只留下了评分'}}</text></view>
+    <empty-state wx:if="{{!reviews.length}}" title="还没有评价" description="完成一次做菜后，家人就能评价。" />
+  </view>
+  <text wx:if="{{reviewCursor}}" class="small muted">下滑加载更多评价</text>
+  <view class="actions"><button class="btn-primary" disabled="{{!dish.active}}" bindtap="add">{{dish.active ? '加入已选菜品' : '这道菜目前不可点'}}</button></view>
+</view>
+<view wx:else class="page"><view class="loading"><view class="spinner"></view><text>读取菜品资料…</text></view></view>

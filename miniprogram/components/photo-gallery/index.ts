@@ -1,0 +1,2 @@
+import {loadMediaPreviewURL} from '../../utils/media'
+Component({properties:{ids:{type:Array,value:[]}},data:{urls:[] as string[]},observers:{async ids(ids:string[]){const version=JSON.stringify(ids);const urls=await Promise.all((ids||[]).map(loadMediaPreviewURL));if(JSON.stringify(this.data.ids)===version)this.setData({urls:urls.filter(Boolean)})}},methods:{preview(e:WechatMiniprogram.TouchEvent){wx.previewImage({current:String(e.currentTarget.dataset.src),urls:this.data.urls})}}})

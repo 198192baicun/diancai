@@ -1,0 +1,2 @@
+import {loadMediaPreviewURL} from '../../utils/media'
+Component({properties:{mediaId:{type:String,value:''},name:{type:String,value:''}},data:{src:'',initial:'家'},observers:{async mediaId(id:string){const src=await loadMediaPreviewURL(id);if(this.data.mediaId===id)this.setData({src})},name(name:string){this.setData({initial:Array.from(name||'家')[0]})}},methods:{preview(){if(this.data.src)wx.previewImage({current:this.data.src,urls:[this.data.src]})}}})

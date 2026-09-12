@@ -1,0 +1,20 @@
+import { get, post, patch, ApiError } from '../../utils/api'
+import type { Member, MenuItem, Vote } from '../../utils/types'
+import { clearMember, showError } from '../../utils/nav'
+import { statusText } from '../../utils/format'
+interface MemberView extends Member { initial: string }
+interface DependencyView {key:string;kind:string;id:string;label:string;sub:string}
+interface DependencyResponse {dependencies:Array<{kind:string;value:MenuItem|Vote}>;nextCursor:string|null}
+Page({
+  data:{dependencyMember:null as Member|null,dependencyCursor:null as string|null,dependencyLoading:false,members:[] as MemberView[],currentMemberId:'',dependencyTitle:'',dependencies:[] as DependencyView[]},
+  onReachBottom(){if(this.data.dependencyCursor)void this.moreDependencies()},
+  async onShow(){this.setData({currentMemberId:((getApp<IAppOption>().globalData.member || { id: '' }).id)||''});await this.load()},async onPullDownRefresh(){await this.load();wx.stopPullDownRefresh()},
+  async load(){try{this.setData({members:(await get<Member[]>('/api/members',{includeInactive:true})).data.map((m)=>({...m,initial:Array.from(m.name)[0]||'家'}))})}catch(e){showError(e)}},
+  async nameDialog(member?:Member){const result=await new Promise<WechatMiniprogram.ShowModalSuccessCallbackResult|null>((r)=>wx.showModal({title:member?'编辑成员名称':'添加成员',content:(member && member.name)||'',editable:true,placeholderText:'成员名称',success:x=>r(x),fail:()=>r(null)}));if(!result || !result.confirm)return;const name=(result.content||'').trim();if(!name)return;try{if(member)await patch<Member>(`/api/members/${encodeURIComponent(member.id)}`,{name});else await post<Member>('/api/members',{name});await this.load()}catch(e){showError(e)}},
+  add(){void this.nameDialog()},edit(e:WechatMiniprogram.TouchEvent){const m=this.data.members.find(x=>x.id===e.currentTarget.dataset.id);if(m)void this.nameDialog(m)},
+  async toggle(e:WechatMiniprogram.TouchEvent){const member=this.data.members.find(x=>x.id===e.currentTarget.dataset.id);if(!member)return;const ok=await new Promise<boolean>((r)=>wx.showModal({title:`${member.active?'停用':'启用'}${member.name}？`,content:member.active?'若存在全日期未完成事项或本人发起的进行中投票，将不会停用。':'启用后可继续参与家庭操作。',success:x=>r(x.confirm),fail:()=>r(false)}));if(!ok)return;try{const next=(await post<Member>(`/api/members/${encodeURIComponent(member.id)}/status`,{active:!member.active})).data;if(member.id===this.data.currentMemberId&&!next.active){clearMember();wx.reLaunch({url:'/pages/identity/index'});return}await this.load()}catch(error){const a=error as ApiError;if(a.code==='MEMBER_IN_USE'){await this.showDependencies(member);return}showError(error)}},
+  async showDependencies(member:Member,append=false){if(this.data.dependencyLoading)return;this.setData({dependencyLoading:true});try{const response=(await get<DependencyResponse>(`/api/members/${encodeURIComponent(member.id)}/dependencies`,{page_size: 10,cursor:append?this.data.dependencyCursor:null})).data;const dependencies=response.dependencies.map((d,index)=>{if(d.kind==='activeVote'){const v=d.value as Vote;return{key:`v-${v.id}-${index}`,kind:'vote',id:v.id,label:v.title,sub:'进行中投票 · 本人发起'}}const item=d.value as MenuItem;return{key:`i-${item.id}-${index}`,kind:'item',id:item.id,label:item.dishName,sub:`${item.menuDate} · ${statusText[item.status]}`}});this.setData({dependencyMember:member,dependencyCursor:response.nextCursor,dependencyTitle:`${member.name} 暂时不能停用`,dependencies:append?[...this.data.dependencies,...dependencies]:dependencies})}catch(e){showError(e)}finally{this.setData({dependencyLoading:false})}},
+  async moreDependencies(){if(this.data.dependencyMember&&this.data.dependencyCursor)await this.showDependencies(this.data.dependencyMember,true)},
+  clearDependencies(){this.setData({dependencyMember:null,dependencyCursor:null,dependencyTitle:'',dependencies:[]})},
+  openDependency(e:WechatMiniprogram.TouchEvent){const kind=e.currentTarget.dataset.kind,id=e.currentTarget.dataset.id;wx.navigateTo({url:kind==='vote'?`/pages/vote/index?id=${encodeURIComponent(id)}`:`/pages/item/index?id=${encodeURIComponent(id)}`})},
+})

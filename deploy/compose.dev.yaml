@@ -1,0 +1,41 @@
+# Development integration only. Does not install backups or certify production.
+name: diancai-dev
+services:
+  app:
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: "${DIANCAI_DEV_IMAGE:-diancai-dev:local}"
+    init: true
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    stop_grace_period: 15s
+    environment:
+      NODE_ENV: development
+      HOST: "0.0.0.0"
+      PORT: "3000"
+      FAMILY_DATA_ROOT: /data/current
+      FAMILY_TIMEZONE: Asia/Shanghai
+      TZ: Asia/Shanghai
+    ports:
+      - target: 3000
+        published: "${DIANCAI_PORT:-3000}"
+        host_ip: "${DIANCAI_BIND_IP:-127.0.0.1}"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: data
+        target: /data
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m,mode=1777
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  data:

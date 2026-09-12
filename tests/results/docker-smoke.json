@@ -1,0 +1,31 @@
+{
+  "scope": "Synthetic Docker development integration; not target-host or WeChat acceptance.",
+  "project": "diancai-smoke-03d7f44bdcb0",
+  "checks": [
+    "published port uses loopback",
+    "unique test project owns container",
+    "non-root, read-only root and no capabilities",
+    "Linux amd64 Node 24 SQLite floor and Beijing timezone",
+    "image contains only runtime and license files",
+    "readiness probe before household setup",
+    "new volume is uninitialized",
+    "referenced media preserves original bytes",
+    "published port uses loopback",
+    "container was recreated",
+    "household identity and epoch persist across recreation",
+    "dish and referenced original media persist"
+  ],
+  "dockerVersion": "29.0.1",
+  "composeVersion": "2.40.3-desktop.1",
+  "runtime": {
+    "node": "v24.16.0",
+    "sqlite": "3.53.0",
+    "platform": "linux",
+    "arch": "x64",
+    "uid": 10001,
+    "timezone": "Asia/Shanghai"
+  },
+  "imageId": "sha256:3149adcbcb42a417e89e547c747dcf9e6bc07912a7dcc28ecacac729428831be",
+  "status": "passed",
+  "temporaryProjectRemoved": true
+}

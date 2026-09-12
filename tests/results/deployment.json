@@ -1,0 +1,93 @@
+{
+  "tests": [
+    {
+      "id": "test_D01_single_application_amd64",
+      "status": "passed"
+    },
+    {
+      "id": "test_D02_explicit_beijing_timezone",
+      "status": "passed"
+    },
+    {
+      "id": "test_D03_real_inputs_required_without_fabricated_values",
+      "status": "passed"
+    },
+    {
+      "id": "test_D04_existing_local_mount_and_container_boundaries",
+      "status": "passed"
+    },
+    {
+      "id": "test_D05_offline_daily_schedule_and_start_guard_contract",
+      "status": "passed"
+    },
+    {
+      "id": "test_D06_ten_verified_successes_and_safe_retention_contract",
+      "status": "passed"
+    },
+    {
+      "id": "test_D07_complete_original_archive_contract",
+      "status": "passed"
+    },
+    {
+      "id": "test_D08_maintenance_ownership_and_recovery_contract",
+      "status": "passed"
+    },
+    {
+      "id": "test_D09_independent_weekly_copy_contract",
+      "status": "passed"
+    },
+    {
+      "id": "test_D10_policy_does_not_claim_implementation",
+      "status": "passed"
+    },
+    {
+      "id": "test_D11_confirmed_decisions_and_ten_scoped_agents",
+      "status": "passed"
+    },
+    {
+      "id": "test_D12_api_and_prototype_fixed_timezone_contract",
+      "status": "passed"
+    },
+    {
+      "id": "test_D13_node_timezone_primitive_beijing_midnight",
+      "status": "passed"
+    },
+    {
+      "id": "test_D14_systemd_calendar_parser_explicit_timezone",
+      "status": "skipped",
+      "detail": "systemd-analyze not available"
+    }
+  ],
+  "passed": 13,
+  "total": 14,
+  "skipped": 1,
+  "evidence": {
+    "agents": [
+      "AGENTS.md",
+      "contracts/AGENTS.md",
+      "deploy/AGENTS.md",
+      "docs/AGENTS.md",
+      "miniprogram/AGENTS.md",
+      "prototype/AGENTS.md",
+      "server/AGENTS.md",
+      "server/migrations/AGENTS.md",
+      "tests/AGENTS.md",
+      "tools/AGENTS.md"
+    ],
+    "nodeTimezonePrimitive": {
+      "UTC": [
+        "2026-09-10",
+        "2026-09-11",
+        "2026-09-11",
+        "2026-09-11"
+      ],
+      "Pacific/Honolulu": [
+        "2026-09-10",
+        "2026-09-11",
+        "2026-09-11",
+        "2026-09-11"
+      ]
+    }
+  },
+  "scope": "D01-D12 static artifact contracts; D13 local Node Intl primitive; D14 local calendar parser. No Docker, installed timer, production app or backup execution."
+}

@@ -1,0 +1,13 @@
+<view class="page">
+  <text class="subtitle mb">所有启用成员均可管理；名称不限定家庭关系。成员只启用/停用，历史长期保留。</text>
+  <button class="btn-secondary" bindtap="add">＋ 添加成员</button>
+  <view wx:if="{{dependencyTitle}}" class="banner error mt"><view><text class="banner-title">{{dependencyTitle}}</text><text class="banner-desc">请先处理以下未完成事项或进行中投票。</text></view><button class="btn-mini" bindtap="clearDependencies">关闭</button></view>
+  <view wx:if="{{dependencies.length}}" class="stack mt">
+    <button wx:for="{{dependencies}}" wx:key="key" class="card dep" data-kind="{{item.kind}}" data-id="{{item.id}}" bindtap="openDependency"><text class="h3">{{item.label}}</text><text class="small muted">{{item.sub}}</text></button>
+  </view>
+  <view class="stack mt">
+    <view wx:for="{{members}}" wx:key="id" class="card"><view class="row"><member-avatar mediaId="{{item.avatarMediaId}}" name="{{item.name}}" /><view class="grow"><text class="h3">{{item.name}}</text><text class="small muted">{{item.id === currentMemberId ? '当前成员 · ' : ''}}{{item.active ? '启用' : '停用'}}</text></view><button class="btn-text" data-id="{{item.id}}" bindtap="edit">改名</button></view><view class="row between mt-sm"><text class="small muted">历史记录长期保留</text><button class="btn-text" data-id="{{item.id}}" bindtap="toggle">{{item.active ? '停用' : '启用'}}</button></view></view>
+  </view>
+</view>
+
+<text wx:if="{{dependencyTitle && dependencyCursor}}" class="small muted">下滑加载更多待处理事项</text>

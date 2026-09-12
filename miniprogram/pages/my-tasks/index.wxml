@@ -1,0 +1,3 @@
+<view class="page"><text class="subtitle mb">这里是你已认领、尚未完成的菜，包含往日事项。</text><view class="stack"><menu-card wx:for="{{items}}" wx:key="id" item="{{item}}" bindopen="openItem" bindprimary="primary" /><empty-state wx:if="{{!loading && !items.length}}" title="暂时没有认领的菜" description="在菜单里点击“我要做”，这里就会出现。" /></view></view>
+
+<view class="list-footer"><text>共 {{listTotal}} 条 · {{nextCursor ? "继续下滑加载" : "已全部显示"}}</text></view>

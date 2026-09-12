@@ -1,0 +1,26 @@
+<view class="page">
+  <app-header avatarId="{{avatarId}}" familyName="{{familyName}}" today="{{today}}" memberName="{{memberName}}" bindmember="switchMember" />
+  <view wx:if="{{offline}}" class="banner error mb"><view><text class="banner-title">家庭服务暂不可达</text><text class="banner-desc">本机草稿和待确认意图会保留，不会离线自动提交。</text></view><button class="btn-mini" bindtap="load">重试</button></view>
+  <text class="h1">今天，想吃点什么？</text><text class="subtitle">一起点菜，把家常饭安排好。</text>
+  <view class="hero">
+    <view class="row between top"><view><text class="small muted">今日菜单</text><view class="mt-sm"><text class="hero-number">{{summary.effectiveCount || 0}}</text><text class="small muted"> 道有效菜，等大家一起吃</text></view></view><text class="h2">🍽</text></view>
+    <view class="progress" wx:if="{{summary.progress !== null}}"><view class="progress-bar" style="width: {{progressPercent}}%;"></view></view>
+    <view class="stats">
+      <button class="stat" data-status="pending" bindtap="openMenu"><text class="stat-number">{{summary.counts.pending || 0}}</text><text class="stat-label">待做</text></button>
+      <button class="stat" data-status="cooking" bindtap="openMenu"><text class="stat-number">{{summary.counts.cooking || 0}}</text><text class="stat-label">正在做</text></button>
+      <button class="stat" data-status="completed" bindtap="openMenu"><text class="stat-number">{{summary.counts.completed || 0}}</text><text class="stat-label">已完成</text></button>
+    </view>
+  </view>
+  <button wx:if="{{unfinishedCount}}" class="banner mt" bindtap="openOverdue"><view><text class="banner-title">往日还有 {{unfinishedCount}} 道菜未完成</text><text class="banner-desc">保留原日期，可以接着做或取消</text></view><text>›</text></button>
+  <view class="section-head"><text class="h2">今天的菜</text><button class="btn-text" bindtap="openMenu">查看全部 ›</button></view>
+  <view class="stack">
+    <menu-card wx:for="{{items}}" wx:key="id" item="{{item}}" bindopen="openItem" bindprimary="cardPrimary" />
+    <empty-state wx:if="{{!loading && !items.length}}" title="今天还没有点菜" description="到菜品库选几道，大家一起做。"><button class="btn-primary mt" bindtap="goCatalog">去点菜</button></empty-state>
+  </view>
+  <view class="section-head"><text class="h2">今晚吃什么</text><button wx:if="{{!activeVote}}" class="btn-text" bindtap="startVote">发起投票</button></view>
+  <button wx:if="{{activeVote}}" class="card" style="width:100%;text-align:left" data-id="{{activeVote.id}}" bindtap="openVote">
+    <view class="row between"><view class="grow"><text class="badge pending">投票中</text><text class="h3 mt-sm">{{activeVote.title}}</text><text class="subtitle">{{activeVote.participantCount}} 人已投 · {{activeVote.candidates.length}} 道候选</text></view><text class="arrow">›</text></view>
+  </button>
+  <view wx:elif="{{!latestVote}}" class="card"><text class="h3">难以决定？让家人选一选</text><text class="subtitle">选几道候选菜，发起一轮轻量投票。</text></view>
+  <button wx:if="{{latestVote}}" class="banner info mt" data-id="{{latestVote.id}}" bindtap="openVote"><view><text class="banner-title">最近一轮 · {{latestVote.title}}</text><text class="banner-desc">{{latestVote.status === 'cancelled' ? '已取消，没有获胜菜' : latestWinnerName + ' · 查看结果'}}</text></view><text>›</text></button>
+</view>

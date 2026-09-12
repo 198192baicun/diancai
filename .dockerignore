@@ -1,0 +1,13 @@
+# Allowlist: local databases, credentials, Git history and media never enter context.
+**
+!Dockerfile
+!server/
+!server/src/
+!server/src/*.cjs
+!server/src/casefold-map.json
+!server/migrations/
+!server/migrations/*.sql
+!LICENSE
+!THIRD_PARTY_NOTICES.md
+!licenses/
+!licenses/*.txt

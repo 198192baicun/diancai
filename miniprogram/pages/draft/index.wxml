@@ -1,0 +1,17 @@
+<view class="page">
+  <text class="subtitle mb">本次由 <text style="font-weight:700">{{memberName}}</text> 点菜 · {{targetDate}}</text>
+  <view wx:if="{{pending}}" class="banner info mb"><view><text class="banner-title">提交结果尚未确认</text><text class="banner-desc">原内容已冻结。不要换 Key 或修改载荷；核对同一请求不会重复点菜。</text></view></view>
+  <view class="stack">
+    <view wx:for="{{items}}" wx:key="localId" class="card">
+      <view class="row"><food-thumb tone="other" /><view class="grow"><text class="h3">{{item.dishName}}</text><text class="small muted">第 {{index + 1}} 条 · 独立备注</text></view><button wx:if="{{!pending}}" class="btn-text" data-index="{{index}}" bindtap="remove">移除</button></view>
+      <textarea class="textarea small-area mt-sm" disabled="{{!!pending}}" maxlength="200" data-index="{{index}}" value="{{item.note}}" bindinput="noteInput" placeholder="这道菜有什么特别要求？" />
+      <voice-note mediaId="{{item.noteVoiceMediaId}}" editable="{{!pending}}" disabled="{{submitting}}" data-index="{{index}}" bindchange="voiceChange" bindbusy="voiceBusy" />
+    </view>
+    <empty-state wx:if="{{!items.length}}" title="还没有选择菜品" description="加号只加入本机草稿，确认提交后家人才会看到。"><button class="btn-primary mt" bindtap="goCatalog">去点菜</button></empty-state>
+  </view>
+  <view wx:if="{{items.length}}" class="actions">
+    <button wx:if="{{pending}}" class="btn-primary" loading="{{submitting}}" disabled="{{submitting}}" bindtap="reconcile">确认提交结果</button>
+    <button wx:else class="btn-primary" loading="{{submitting}}" disabled="{{submitting || voiceBusy}}" bindtap="submit">{{submitting ? '正在提交…' : '提交 ' + items.length + ' 道菜'}}</button>
+    <text class="small muted">同一道菜多次添加会保留为不同事项。结果未知时只使用原幂等 Key 与原载荷核对。</text>
+  </view>
+</view>

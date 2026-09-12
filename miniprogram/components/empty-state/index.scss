@@ -1,0 +1,5 @@
+:host { display:block; width:100%; min-width:0; }
+view, text { box-sizing:border-box; }
+.empty { width:100%; padding:64rpx 36rpx; background:#fff; border:1rpx dashed #d7dde6; border-radius:28rpx; text-align:center; }
+.mark { width:78rpx; height:78rpx; border-radius:24rpx; background:#ecf3ff; color:#2366db; display:flex; align-items:center; justify-content:center; margin:0 auto 20rpx; font-size:42rpx; }
+.title { display:block; font-size:28rpx; font-weight:700; }.desc { display:block; color:#657186; font-size:22rpx; line-height:1.7; margin-top:8rpx; }

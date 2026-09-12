@@ -1,0 +1,1 @@
+Component({properties:{labelPrefix:{type:String,value:"评价于"},value:String,menuDate:String},data:{label:''},observers:{value(value:string){if(!value){this.setData({label:''});return}const d=new Date(new Date(value).getTime()+8*3600000);this.setData({label:d.toISOString().slice(0,16).replace('T',' ')})}}})

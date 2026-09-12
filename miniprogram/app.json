@@ -1,0 +1,86 @@
+{
+  "pages": [
+    "pages/entry/index",
+    "pages/home/index",
+    "pages/catalog/index",
+    "pages/history/index",
+    "pages/profile/index",
+    "pages/connect/index",
+    "pages/setup/index",
+    "pages/identity/index",
+    "pages/draft/index",
+    "pages/dish/index",
+    "pages/menu/index",
+    "pages/item/index",
+    "pages/review/index",
+    "pages/repeat/index",
+    "pages/vote/index",
+    "pages/vote-form/index",
+    "pages/manage/index",
+    "pages/dish-form/index",
+    "pages/members/index",
+    "pages/categories/index",
+    "pages/settings/index",
+    "pages/my-orders/index",
+    "pages/my-reviews/index",
+    "pages/overdue/index",
+    "pages/my-tasks/index",
+    "pages/recipe-import/index",
+    "pages/recipe-drafts/index",
+    "pages/random/index",
+    "pages/dashboard/index",
+    "pages/vote-history/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "家庭点菜",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f6f7f9"
+  },
+  "tabBar": {
+    "color": "#8b95a3",
+    "selectedColor": "#2366db",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "assets/home.png",
+        "selectedIconPath": "assets/home-active.png"
+      },
+      {
+        "pagePath": "pages/catalog/index",
+        "text": "点菜",
+        "iconPath": "assets/catalog.png",
+        "selectedIconPath": "assets/catalog-active.png"
+      },
+      {
+        "pagePath": "pages/history/index",
+        "text": "历史",
+        "iconPath": "assets/history.png",
+        "selectedIconPath": "assets/history-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "assets/profile.png",
+        "selectedIconPath": "assets/profile-active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "app-header": "/components/app-header/index",
+    "food-thumb": "/components/food-thumb/index",
+    "menu-card": "/components/menu-card/index",
+    "empty-state": "/components/empty-state/index",
+    "voice-note": "/components/voice-note/index",
+    "photo-gallery": "/components/photo-gallery/index",
+    "review-time": "/components/review-time/index",
+    "member-avatar": "/components/member-avatar/index"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

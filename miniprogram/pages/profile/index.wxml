@@ -1,0 +1,17 @@
+<view class="page">
+  <app-header avatarId="{{avatarId}}" familyName="{{familyName}}" today="{{today}}" memberName="{{memberName}}" bindmember="switchMember" />
+  <view class="profile-head"><photo-gallery wx:if="{{avatarId}}" ids="{{[avatarId]}}" /><view wx:else class="avatar large">{{memberInitial}}</view><view><text class="h1">{{memberName}}</text><text class="subtitle">当前家庭成员</text></view></view>
+  <view class="split mb"><button class="btn-secondary" open-type="chooseAvatar" bindchooseavatar="chooseAvatar" disabled="{{avatarBusy}}">选择微信头像</button><button class="btn-secondary" bindtap="uploadAvatar" disabled="{{avatarBusy}}">上传头像</button></view><button class="btn-secondary" bindtap="switchMember">切换成员</button>
+  <view class="card mt"><button class="list-link" bindtap="dashboard">家庭数据看板 ›</button><button class="list-link" bindtap="voteHistory">历次投票 ›</button>
+    <button class="list-link" bindtap="myTasks"><text>我的待做</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="myOrders"><text>我的点菜</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="myReviews"><text>我的评价</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="recipeDrafts"><text>菜谱编辑草稿</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="importRecipe"><text>导入图文教程</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="manage"><text>公共菜品管理</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="members"><text>家庭成员</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="categories"><text>菜品分类</text><text class="arrow">›</text></button>
+    <button class="list-link" bindtap="settings"><text>家庭与服务设置</text><text class="arrow">›</text></button>
+  </view>
+  <view class="note mt">家庭菜品由大家共同管理，创建人不是私有菜品所有者。</view>
+</view>

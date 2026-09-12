@@ -1,0 +1,10 @@
+<view class="page">
+  <view class="section-head category-heading"><text class="h1">菜品分类</text><button class="btn-mini" bindtap="add">＋ 添加分类</button></view>
+  <text class="subtitle mb">按家里的习惯整理菜品，选菜更方便。</text>
+  <view class="stack">
+    <view wx:for="{{categories}}" wx:key="id" class="card category-card">
+      <view class="row between"><text class="h3 grow">{{item.name}}</text><text class="badge {{item.active ? 'completed' : 'cancelled'}}">{{item.active ? '启用' : '停用'}}</text></view>
+      <view class="row between mt-sm"><text class="small muted grow">{{item.activeDishCount}} 道上架菜</text><view class="row category-actions"><button class="btn-text" data-id="{{item.id}}" bindtap="edit">改名</button><button class="btn-text" data-id="{{item.id}}" bindtap="toggle">{{item.active ? '停用' : '启用'}}</button></view></view>
+    </view>
+  </view>
+</view>

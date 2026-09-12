@@ -1,0 +1,21 @@
+{
+  "name": "family-diancai-miniprogram",
+  "version": "1.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "description": "家庭点菜微信小程序与家庭局域网服务",
+  "scripts": {
+    "server:dev": "node server/src/server.cjs",
+    "test:server": "node --test tests/server.test.cjs",
+    "test:static": "node --test tests/miniprogram-static.test.cjs",
+    "test": "node --test tests/server.test.cjs tests/miniprogram-static.test.cjs tests/client-list.test.cjs tests/review-regressions.test.cjs tests/recipe-import.test.cjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "2.8.3-1",
+    "typescript": "5.8.3"
+  }
+}

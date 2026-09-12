@@ -1,0 +1,7 @@
+<view class="page">
+  <view class="mt"><text class="eyebrow">FAMILY TABLE</text><text class="h1 mt-sm">连上家里的厨房</text><text class="subtitle">手机和 Linux 服务需要位于已允许的家庭网络内。</text></view>
+  <label class="field"><text class="field-label">家庭服务地址</text><input class="input" value="{{address}}" bindinput="onAddress" placeholder="http://192.168.1.100:3000" /></label>
+  <button class="btn-primary" loading="{{testing}}" disabled="{{testing}}" bindtap="testConnection">{{testing ? '正在连接…' : '测试连接'}}</button>
+  <view wx:if="{{error}}" class="banner error mt"><view><text class="banner-title">连接失败</text><text class="banner-desc">{{error}}</text></view></view>
+  <view class="note mt">成员选择只是业务归属，不是登录认证。家庭服务只应开放在可信局域网内，不应暴露公网。微信真机的局域网请求、上传、下载与发布形态需按实际设备验收。</view>
+</view>

@@ -1,0 +1,10 @@
+<view class="page">
+  <text class="subtitle mb">仅当前家庭、成员和本机可见。保存到家庭菜谱后，这里的草稿会移除；也可删除不需要的草稿。</text>
+  <view class="stack">
+    <view wx:for="{{drafts}}" wx:key="id" class="card">
+      <button class="list-link" data-id="{{item.id}}" bindtap="open"><text>{{item.name || '未命名的新菜'}} · 继续编辑</text><text>›</text></button>
+      <button class="btn-danger mt" data-id="{{item.id}}" bindtap="remove">删除草稿</button>
+    </view>
+    <empty-state wx:if="{{!drafts.length}}" title="没有未完成的菜谱" description="编辑菜谱时会自动保存本机草稿。" />
+  </view>
+</view>

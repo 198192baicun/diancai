@@ -1,0 +1,184 @@
+TAP version 13
+# Subtest: 同菜两条具有独立ID、备注和相同操作者
+ok 1 - 同菜两条具有独立ID、备注和相同操作者
+  ---
+  duration_ms: 12.371358
+  type: 'test'
+  ...
+# Subtest: 批次含下架菜时整体失败且原状态不变
+ok 2 - 批次含下架菜时整体失败且原状态不变
+  ---
+  duration_ms: 2.384884
+  type: 'test'
+  ...
+# Subtest: 成功意图重复提交只返回原ID
+ok 3 - 成功意图重复提交只返回原ID
+  ---
+  duration_ms: 0.885926
+  type: 'test'
+  ...
+# Subtest: 同Key不同备注不能执行
+ok 4 - 同Key不同备注不能执行
+  ---
+  duration_ms: 1.026391
+  type: 'test'
+  ...
+# Subtest: 取消后重放原批次不复活条目
+ok 5 - 取消后重放原批次不复活条目
+  ---
+  duration_ms: 3.701705
+  type: 'test'
+  ...
+# Subtest: 跨午夜成功回执仍返回原日期
+ok 6 - 跨午夜成功回执仍返回原日期
+  ---
+  duration_ms: 0.447134
+  type: 'test'
+  ...
+# Subtest: 跨午夜首次执行的旧日期拒绝
+ok 7 - 跨午夜首次执行的旧日期拒绝
+  ---
+  duration_ms: 0.315745
+  type: 'test'
+  ...
+# Subtest: 数据代次变化拒绝旧意图
+ok 8 - 数据代次变化拒绝旧意图
+  ---
+  duration_ms: 0.396618
+  type: 'test'
+  ...
+# Subtest: 不能将另一成员的意图归到当前成员
+ok 9 - 不能将另一成员的意图归到当前成员
+  ---
+  duration_ms: 0.839309
+  type: 'test'
+  ...
+# Subtest: 停用成员可读取其已成功回执但不能新提交
+ok 10 - 停用成员可读取其已成功回执但不能新提交
+  ---
+  duration_ms: 1.642049
+  type: 'test'
+  ...
+# Subtest: 两人认领使用旧revision只有一次成功
+ok 11 - 两人认领使用旧revision只有一次成功
+  ---
+  duration_ms: 1.141159
+  type: 'test'
+  ...
+# Subtest: 只有点菜人可取消待做、只有做菜人可取消正在做
+ok 12 - 只有点菜人可取消待做、只有做菜人可取消正在做
+  ---
+  duration_ms: 0.693014
+  type: 'test'
+  ...
+# Subtest: 取消认领回到待做并清空当前做菜人
+ok 13 - 取消认领回到待做并清空当前做菜人
+  ---
+  duration_ms: 0.252661
+  type: 'test'
+  ...
+# Subtest: 往日事项完成后保持原日期
+ok 14 - 往日事项完成后保持原日期
+  ---
+  duration_ms: 0.221869
+  type: 'test'
+  ...
+# Subtest: 已完成不允许取消或回到待做
+ok 15 - 已完成不允许取消或回到待做
+  ---
+  duration_ms: 0.743761
+  type: 'test'
+  ...
+# Subtest: 评分必须整数1至5且只对completed
+ok 16 - 评分必须整数1至5且只对completed
+  ---
+  duration_ms: 0.420721
+  type: 'test'
+  ...
+# Subtest: 修改本人评价不增加评价条数
+ok 17 - 修改本人评价不增加评价条数
+  ---
+  duration_ms: 0.525402
+  type: 'test'
+  ...
+# Subtest: 成员停用保护包含自己点的待做和跨天正在做
+ok 18 - 成员停用保护包含自己点的待做和跨天正在做
+  ---
+  duration_ms: 0.829992
+  type: 'test'
+  ...
+# Subtest: 最后一个启用成员不能停用
+ok 19 - 最后一个启用成员不能停用
+  ---
+  duration_ms: 0.295265
+  type: 'test'
+  ...
+# Subtest: 公共菜品允许其他成员编辑、版本过期不能覆盖
+ok 20 - 公共菜品允许其他成员编辑、版本过期不能覆盖
+  ---
+  duration_ms: 1.711897
+  type: 'test'
+  ...
+# Subtest: 进行中投票候选不可下架、普通菜可以下架保留事项
+ok 21 - 进行中投票候选不可下架、普通菜可以下架保留事项
+  ---
+  duration_ms: 0.8547
+  type: 'test'
+  ...
+# Subtest: 存在上架菜的分类不可停用
+ok 22 - 存在上架菜的分类不可停用
+  ---
+  duration_ms: 0.275821
+  type: 'test'
+  ...
+# Subtest: 一人改票不增加参与人数，已投票成员停用保留票
+ok 23 - 一人改票不增加参与人数，已投票成员停用保留票
+  ---
+  duration_ms: 0.623219
+  type: 'test'
+  ...
+# Subtest: 唯一最高和并列选择以最终计票为准
+ok 24 - 唯一最高和并列选择以最终计票为准
+  ---
+  duration_ms: 1.177148
+  type: 'test'
+  ...
+# Subtest: 零票时全部候选并列，取消不产生winner
+ok 25 - 零票时全部候选并列，取消不产生winner
+  ---
+  duration_ms: 0.494267
+  type: 'test'
+  ...
+# Subtest: 只有发起人能结束投票且结束后不能改票
+ok 26 - 只有发起人能结束投票且结束后不能改票
+  ---
+  duration_ms: 0.616527
+  type: 'test'
+  ...
+# Subtest: 同时最多一轮进行中投票
+ok 27 - 同时最多一轮进行中投票
+  ---
+  duration_ms: 0.323479
+  type: 'test'
+  ...
+# Subtest: 获胜菜一次加入，取消该条后不重复加入
+ok 28 - 获胜菜一次加入，取消该条后不重复加入
+  ---
+  duration_ms: 0.696092
+  type: 'test'
+  ...
+# Subtest: 历史复点的新事项采用当前成员、当前日期和来源ID
+ok 29 - 历史复点的新事项采用当前成员、当前日期和来源ID
+  ---
+  duration_ms: 0.807807
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 337.30432

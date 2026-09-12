@@ -1,0 +1,62 @@
+{
+  "policyVersion": 1,
+  "artifactType": "maintenance_implementation_contract",
+  "runtimePlatform": "linux/amd64",
+  "timezone": "Asia/Shanghai",
+  "backup": {
+    "mode": "offline_full",
+    "schedule": {
+      "calendar": "*-*-* 04:00:00 Asia/Shanghai",
+      "persistentCatchUp": false,
+      "randomizedDelaySeconds": 0,
+      "automaticStartWindow": {
+        "from": "04:00:00",
+        "toExclusive": "04:15:00"
+      }
+    },
+    "retention": {
+      "verifiedSuccessfulLocalArchives": 10,
+      "countPartialAsSuccessful": false,
+      "pruneOnlyAfterVerifiedArchiveAndServiceRecovery": true
+    },
+    "archive": {
+      "format": "tar",
+      "compression": "none",
+      "databaseSnapshot": "sqlite_backup_api",
+      "includeAllReferencedOriginalMedia": true,
+      "hashAlgorithm": "sha256",
+      "atomicPublication": true
+    },
+    "coordination": {
+      "exclusiveHostMaintenanceLock": true,
+      "skipWhenLockBusy": true,
+      "confirmNoWriters": true,
+      "automaticRunRequiresInitiallyRunningService": true,
+      "recheckTimeWindowBeforeStop": true
+    },
+    "failure": {
+      "keepExistingSuccessfulArchives": true,
+      "neverPruneOnFailure": true,
+      "restartOnlyServiceStoppedByThisRunWhenDataSafe": true,
+      "recordArchiveAndServiceRecoverySeparately": true
+    },
+    "missedRun": {
+      "automaticDaytimeRetry": false,
+      "recordReason": true,
+      "manualRunRequiresDowntimeAuthorization": true
+    }
+  },
+  "independentCopy": {
+    "cadence": "at_least_weekly",
+    "execution": "operator",
+    "requireDifferentPhysicalMedium": true,
+    "verifyAllManifestHashes": true,
+    "recordCopyAndVerification": true,
+    "automaticPruning": false
+  },
+  "implementationStatus": {
+    "backupCommandImplemented": false,
+    "schedulerInstalled": false,
+    "targetHostValidated": false
+  }
+}
